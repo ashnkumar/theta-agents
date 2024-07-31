@@ -6,15 +6,18 @@
 ![Build Status](https://img.shields.io/badge/build-passing-brightgreen)
 ![Coverage](https://img.shields.io/badge/coverage-100%25-brightgreen)
 
-The **Theta Agents SDK** is a Python library designed to help developers quickly build AI agent frameworks on the Theta EdgeCloud network. The SDK provides a range of prebuilt capabilities, such as generating images, creating videos, and developing smart contracts.
+The **Theta Agents SDK** is a Python library designed to help developers quickly build AI agent frameworks on the Theta EdgeCloud network. The SDK provides a range of prebuilt capabilities based on EdgeCloud's off-the-shelf containers, such as generating images and videos (Stable Diffusion), using EdgeCloud-hosted LLMs for underlying agent reasoning (e.g. Llama, Mistral) and writing code (CodeLlama), and Theta-specific capabilities like deploying to EdgeStore and the Theta Video API.
 
 ![alt](https://i.imgur.com/bBgAOYZ.png)
 
 ## Features
 
-- **Create Images from Prompts**: Use models like OpenAI's DALL-E to generate images based on textual prompts.
-- **Create Videos from Images**: Generate videos using specified models and endpoints.
-- **Generate Smart Contracts**: Easily create smart contracts based on user-defined prompts.
+- **Create Images from Prompts**: Use EdgeCloud-hosted (or custom containers on EdgeCloud) image models like Stable Diffusion.
+- **Create Videos from Images**: Generate videos using Stable Diffusion (Video) from EdgeCloud.
+- **Generate Smart Contracts**: Easily create smart contracts based on user-defined prompts through CodeLlama hosted on EdgeCloud.
+- **Deploy Smart Contracts**: Use web3-based agent tools to deploy to the Theta Testnet.
+- **Upload files to Theta network's services**: Agents can upload files to EdgeCloud and videos to Theta's video services network.
+- _**Coming soon:**_ Support for multi-agent workflows (2+ agents collaborating autonomously to solve tasks).
 
 ## Installation
 
@@ -26,7 +29,7 @@ cd theta-agents-sdk
 
 # Create and activate a virtual environment
 python -m venv venv
-source venv/bin/activate  # On Windows use `venv\Scriptsctivate`
+source venv/bin/activate
 
 # Install dependencies
 pip install -e .
@@ -36,14 +39,14 @@ pip install -e .
 
 ### 1. Environment Variables
 
-Create a `.env` file in the root directory of your project. This file should contain all sensitive information such as API keys and private keys. Here's an example `.env`:
+Create a `.env` file in the root directory of your project. This file should contain all sensitive information such as API keys and private keys. Here's an example `.env` and you can look at `.env.example` for more:
 
 ```ini
 # .env
 
-OPENAI_API_KEY=your-openai-api-key
+HUGGING_FACE_TOKEN=your-hugging-face-token
 GRADIO_API_KEY=your-gradio-api-key
-BLOCKCHAIN_PRIVATE_KEY=your-blockchain-private-key
+BLOCKCHAIN_PRIVATE_KEY=your-blockchain-private-key # if deploying to Theta's chain.
 ```
 
 ### 2. Configuration File
@@ -57,29 +60,23 @@ cp config_template.yaml config.yaml
 Edit `config.yaml` to include your specific configuration details, such as endpoints, model names, and environment variable names.
 
 ```yaml
-llm_endpoint: "https://api.openai.com/v1"
-llm_model_name: "gpt-4o-mini"
+llm_endpoint: "https://gemma2b....onthetaedgecloud.com/v1/chat/completions"
+llm_model_name: "google/gemma-2b"
 
 capabilities:
   image_tools:
     create_image_from_prompt:
-      edgecloud_endpoint: "your-image-endpoint"
-      edgecloud_endpoint_type: "openai"
-      model_name: "dall-e-2"
-      api_key_env: "OPENAI_API_KEY"
+      edgecloud_endpoint: "https://stablediffi...onthetaedgecloud.com"
+      edgecloud_endpoint_type: "gradio"
   video_tools:
     create_video_from_image:
-      edgecloud_endpoint: "your-video-endpoint"
+      edgecloud_endpoint: "https://stablediffi...onthetaedgecloud.com"
       edgecloud_endpoint_type: "gradio"
-      model_name: "asdf"
-      api_key_env: "GRADIO_API_KEY"
   smart_contract_tools:
     generate_smart_contract:
-      edgecloud_endpoint: "your-smart-contract-endpoint"
+      edgecloud_endpoint: "..."
       edgecloud_endpoint_type: "openai"
-      model_name: "gpt-4o"
-      api_key_env: "OPENAI_API_KEY"
-      blockchain_private_key_env: "BLOCKCHAIN_PRIVATE_KEY"
+      model_name: "..."
 ```
 
 ## Usage
@@ -89,7 +86,7 @@ capabilities:
 To interact with an AI agent using the terminal chat interface, you can use the following code snippet in your script:
 
 ```python
-from theta_agents import ThetaAgent, create_image_from_prompt, create_video_from_image, generate_smart_contract
+from theta_agents import ThetaAgent, create_image_from_prompt, create_video_from_image
 
 # Load environment variables
 load_dotenv()
