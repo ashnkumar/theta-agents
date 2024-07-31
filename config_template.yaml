@@ -1,0 +1,42 @@
+# Configuration for Theta Agents SDK
+
+# The endpoint for the underlying language model (LLM) service
+llm_endpoint: "https://api.openai.com/v1"
+# The model name to use for the LLM
+llm_model_name: "gpt-4o-mini"
+
+capabilities:
+  image_tools:
+    create_image_from_prompt:
+      # The endpoint to use for image creation (e.g., OpenAI API)
+      edgecloud_endpoint: "your-image-endpoint"
+      # The type of the endpoint (e.g., "openai", "gradio")
+      edgecloud_endpoint_type: "openai"
+      # The specific model to use for creating images
+      model_name: "dall-e-2"
+      # The environment variable name containing the API key
+      api_key_env: "OPENAI_API_KEY"
+
+  video_tools:
+    create_video_from_image:
+      # The endpoint to use for video creation (e.g., Gradio instance)
+      edgecloud_endpoint: "your-video-endpoint"
+      # The type of the endpoint (e.g., "gradio")
+      edgecloud_endpoint_type: "gradio"
+      # The specific model to use for creating videos
+      model_name: "asdf"
+      # The environment variable name containing the API key (if needed)
+      api_key_env: "GRADIO_API_KEY"
+
+  smart_contract_tools:
+    generate_smart_contract:
+      # The endpoint to use for generating smart contracts
+      edgecloud_endpoint: "your-smart-contract-endpoint"
+      # The type of the endpoint (e.g., "openai")
+      edgecloud_endpoint_type: "openai"
+      # The specific model to use for generating smart contracts
+      model_name: "gpt-4o"
+      # The environment variable name containing the API key
+      api_key_env: "OPENAI_API_KEY"
+      # The environment variable name containing the blockchain private key
+      blockchain_private_key_env: "BLOCKCHAIN_PRIVATE_KEY"
