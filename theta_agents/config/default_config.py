@@ -36,6 +36,7 @@ def get_env_variable_from_yaml(yaml_config, yaml_path, default=None):
 global_config = {
     "llm_endpoint": get_config_value('LLM_ENDPOINT', 'llm_endpoint', 'https://api.openai.com/v1'),
     "llm_model_name": get_config_value('LLM_MODEL_NAME', 'llm_model_name', 'gpt-4o-mini'),
+    "llm_api_key": get_env_variable_from_yaml(yaml_config, 'llm_api_key_env'),
     "capabilities": {
         "image_tools": {
             "create_image_from_prompt": {
@@ -58,8 +59,30 @@ global_config = {
                 "edgecloud_endpoint": get_config_value('SMART_CONTRACT_ENDPOINT', 'capabilities.smart_contract_tools.generate_smart_contract.edgecloud_endpoint'),
                 "edgecloud_endpoint_type": get_config_value('SMART_CONTRACT_ENDPOINT_TYPE', 'capabilities.smart_contract_tools.generate_smart_contract.edgecloud_endpoint_type'),
                 "model_name": get_config_value('SMART_CONTRACT_MODEL_NAME', 'capabilities.smart_contract_tools.generate_smart_contract.model_name'),
-                "api_key": get_env_variable_from_yaml(yaml_config, 'capabilities.smart_contract_tools.generate_smart_contract.api_key_env'),
-                "blockchain_private_key": get_env_variable_from_yaml(yaml_config, 'capabilities.smart_contract_tools.generate_smart_contract.blockchain_private_key_env')
+                "api_key": get_env_variable_from_yaml(yaml_config, 'capabilities.smart_contract_tools.generate_smart_contract.api_key_env')
+            },
+            "analyze_smart_contract": {
+                "edgecloud_endpoint": get_config_value('SMART_CONTRACT_ENDPOINT', 'capabilities.smart_contract_tools.analyze_smart_contract.edgecloud_endpoint'),
+                "edgecloud_endpoint_type": get_config_value('SMART_CONTRACT_ENDPOINT_TYPE', 'capabilities.smart_contract_tools.analyze_smart_contract.edgecloud_endpoint_type'),
+                "model_name": get_config_value('SMART_CONTRACT_MODEL_NAME', 'capabilities.smart_contract_tools.analyze_smart_contract.model_name'),
+                "api_key": get_env_variable_from_yaml(yaml_config, 'capabilities.smart_contract_tools.analyze_smart_contract.api_key_env')
+            },
+            "deploy_smart_contract": {
+                "theta_wallet_public_address": get_config_value('THETA_WALLET_PUBLIC_ADDRESS', 'capabilities.smart_contract_tools.deploy_smart_contract.theta_wallet_public_address'),     
+                "theta_wallet_private_key": get_env_variable_from_yaml(yaml_config, 'capabilities.smart_contract_tools.deploy_smart_contract.theta_wallet_private_key_env')
+            }
+        },
+        "theta_edgestore_tools": {
+            "upload_to_edgestore": {
+                "w3_provider_endpoint": get_config_value('W3_PROVIDER_ENDPOINT', 'capabilities.theta_edgestore_tools.upload_to_edgestore.w3_provider_endpoint'),
+                "address": get_config_value('THETA_WALLET_PUBLIC_ADDRESS', 'capabilities.theta_edgestore_tools.upload_to_edgestore.address'),
+                "theta_wallet_private_key": get_env_variable_from_yaml(yaml_config, 'capabilities.theta_edgestore_tools.upload_to_edgestore.theta_wallet_private_key_env')
+            }
+        },
+        "theta_video_tools": {
+            "upload_video_to_theta": {
+                "service_account_id": get_config_value('SERVICE_ACCOUNT_ID', 'capabilities.theta_video_tools.upload_video_to_theta.service_account_id'),
+                "service_account_secret": get_env_variable_from_yaml(yaml_config, 'capabilities.theta_video_tools.upload_video_to_theta.service_account_secret_env')
             }
         }
     }
